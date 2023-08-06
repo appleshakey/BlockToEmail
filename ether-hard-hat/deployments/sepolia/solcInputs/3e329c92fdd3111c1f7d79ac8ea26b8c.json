@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/AddresstoEmail.sol": {
+      "content": "// SPDX-License-Identifier: MIT\r\n\r\npragma solidity ^0.8.7;\r\n\r\ncontract Address_to_Email {\r\n    event emailStored(string email, address addr);\r\n\r\n    event TransactionStatus(bool callStatus, address sender, address reciever);\r\n\r\n    uint256 constant MINIMUM_ETH = 50 * 10 * 18;\r\n\r\n    mapping(string => address) public s_email_to_addr;\r\n\r\n    function storeEmailtoAddr(string memory _email, address _addr) public {\r\n        s_email_to_addr[_email] = _addr;\r\n        emit emailStored(_email, _addr);\r\n    }\r\n\r\n    function getAddr(string memory _email) public view returns (address) {\r\n        return (s_email_to_addr[_email]);\r\n    }\r\n\r\n    function payToAddr(address payable _addr) public payable {\r\n        (bool callSuccess, ) = _addr.call{value: msg.value}(\"\");\r\n        require(callSuccess, \"call is Failiure\");\r\n        emit TransactionStatus(callSuccess, msg.sender, _addr);\r\n    }\r\n}\r\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
